@@ -5,7 +5,7 @@ type Props = {
   enUnit: string;
   siUnit: string;
 
-  baseValue: number; // internal truth (EN base)
+  baseValue: number;
   setBaseValue: (v: number) => void;
 
   fromBaseToEN: (base: number) => number;
@@ -19,7 +19,6 @@ type Props = {
 export function DualNumberField(props: Props) {
   const d = props.decimals ?? 3;
 
-  // Display empty string when base is 0 (so form looks "empty")
   const enVal = props.baseValue === 0 ? "" : props.fromBaseToEN(props.baseValue).toFixed(d);
   const siVal = props.baseValue === 0 ? "" : props.fromBaseToSI(props.baseValue).toFixed(d);
 
@@ -50,24 +49,12 @@ export function DualNumberField(props: Props) {
       <div style={{ fontWeight: 600 }}>{props.label}</div>
 
       <div>
-        <input
-          type="number"
-          inputMode="decimal"
-          value={enVal}
-          onChange={onChangeEN}
-          style={{ width: "100%", padding: 8 }}
-        />
+        <input type="number" inputMode="decimal" value={enVal} onChange={onChangeEN} style={{ width: "100%", padding: 8 }} />
         <div style={{ fontSize: 12, opacity: 0.7 }}>{props.enUnit}</div>
       </div>
 
       <div>
-        <input
-          type="number"
-          inputMode="decimal"
-          value={siVal}
-          onChange={onChangeSI}
-          style={{ width: "100%", padding: 8 }}
-        />
+        <input type="number" inputMode="decimal" value={siVal} onChange={onChangeSI} style={{ width: "100%", padding: 8 }} />
         <div style={{ fontSize: 12, opacity: 0.7 }}>{props.siUnit}</div>
       </div>
     </div>

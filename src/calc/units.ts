@@ -4,17 +4,6 @@ export const PI = Math.PI;
 export const in_to_mm = (x: number) => x * 25.4;
 export const mm_to_in = (x: number) => x / 25.4;
 
-// Section modulus (in^3 <-> mm^3)
-const MM_PER_IN = 25.4;
-const CUBIC_CONVERSION = MM_PER_IN ** 3;
-export const in3_to_mm3 = (x: number) => x * CUBIC_CONVERSION;
-export const mm3_to_in3 = (x: number) => x / CUBIC_CONVERSION;
-
-// Moment of inertia (in^4 <-> mm^4)
-const QUARTIC_CONVERSION = MM_PER_IN ** 4;
-export const in4_to_mm4 = (x: number) => x * QUARTIC_CONVERSION;
-export const mm4_to_in4 = (x: number) => x / QUARTIC_CONVERSION;
-
 // Pressure / stress
 export const psi_to_MPa = (x: number) => x / 145.037738;
 export const MPa_to_psi = (x: number) => x * 145.037738;
