@@ -6,7 +6,9 @@ import {
   in_to_mm, mm_to_in,
   lbf_to_kN, kN_to_lbf,
   psi_to_MPa, MPa_to_psi,
-  ftlbf_to_Nm
+  ftlbf_to_Nm,
+  in3_to_mm3, mm3_to_in3,
+  in4_to_mm4, mm4_to_in4
 } from "../calc/units";
 
 const emptyBeam: BeamInput = {
@@ -128,29 +130,31 @@ export function BeamModule() {
         decimals={0}
       />
 
-      <div style={{ marginBottom: 10 }}>
-        <div style={{ fontWeight: 600 }}>Section modulus S</div>
-        <input
-          type="number"
-          value={inp.sectionModulus_in3 === 0 ? "" : String(inp.sectionModulus_in3)}
-          onChange={(e) => set("sectionModulus_in3", e.target.value.trim() === "" ? 0 : Number(e.target.value))}
-          placeholder="in^3"
-          style={{ width: "100%", padding: 8 }}
-        />
-        <div style={{ fontSize: 12, opacity: 0.7 }}>Input in³ (from beam table/catalog)</div>
-      </div>
+      <DualNumberField
+        label="Section modulus S"
+        enUnit="in³"
+        siUnit="mm³"
+        baseValue={inp.sectionModulus_in3}
+        setBaseValue={(v) => set("sectionModulus_in3", v)}
+        fromBaseToEN={(x) => x}
+        fromBaseToSI={in3_to_mm3}
+        toBaseFromEN={(x) => x}
+        toBaseFromSI={mm3_to_in3}
+        decimals={3}
+      />
 
-      <div style={{ marginBottom: 10 }}>
-        <div style={{ fontWeight: 600 }}>Moment of inertia I</div>
-        <input
-          type="number"
-          value={inp.inertia_in4 === 0 ? "" : String(inp.inertia_in4)}
-          onChange={(e) => set("inertia_in4", e.target.value.trim() === "" ? 0 : Number(e.target.value))}
-          placeholder="in^4"
-          style={{ width: "100%", padding: 8 }}
-        />
-        <div style={{ fontSize: 12, opacity: 0.7 }}>Input in⁴ (from beam table/catalog)</div>
-      </div>
+      <DualNumberField
+        label="Moment of inertia I"
+        enUnit="in⁴"
+        siUnit="mm⁴"
+        baseValue={inp.inertia_in4}
+        setBaseValue={(v) => set("inertia_in4", v)}
+        fromBaseToEN={(x) => x}
+        fromBaseToSI={in4_to_mm4}
+        toBaseFromEN={(x) => x}
+        toBaseFromSI={mm4_to_in4}
+        decimals={3}
+      />
 
       <h3>Allowables</h3>
       <DualNumberField
@@ -204,7 +208,9 @@ export function BeamModule() {
 
             <div style={{ border: "1px solid #ddd", borderRadius: 10, padding: 12 }}>
               <div style={{ fontWeight: 700, marginBottom: 8 }}>Beam</div>
-              <div><b>Mmax:</b> {out.Mmax_ftlbf.toFixed(0)} ft·lbf</div>
+              <div>
+                <b>Mmax:</b> {out.Mmax_ftlbf.toFixed(0)} ft·lbf ({ftlbf_to_Nm(out.Mmax_ftlbf).toFixed(0)} N·m)
+              </div>
               <div><b>Stress:</b> {out.bendingStress_psi.toFixed(0)} psi ({psi_to_MPa(out.bendingStress_psi).toFixed(1)} MPa)</div>
               <div>
                 <b>Utilization:</b> {out.bendingUtil_percent.toFixed(1)}%{" "}
